@@ -47,3 +47,23 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
             ->middleware('verified')
             ->name('home');
+
+# ==================================================================================== #
+# Admin Routes                                                                         #
+# ==================================================================================== #
+Route::prefix('admin')
+        ->name('admin.')
+        //->middleware(['verified', 'auth'])
+        ->group(function () {
+
+    Route::resource('/users', App\Http\Controllers\Admin\UserController::class);
+
+    Route::get('/unsubscribe', [App\Http\Controllers\Admin\UserController::class, 'unsubscribe']);
+});
+# ==================================================================================== #
+# End Admin Routes                                                                     #
+# ==================================================================================== #
+Route::get('/unsubscribe/{user}', function (Illuminate\Http\Request $request) {
+ 
+    return "hola";
+})->name('unsubscribe');
