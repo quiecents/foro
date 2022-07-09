@@ -6,35 +6,35 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\User;
 
-class SearchUsers extends Component
+class UsersCrud extends Component
 {
     use WithPagination;
     
-    public $deleteId = '';
     public $search = '';
     protected $paginationTheme = 'bootstrap';
+    public $deleteId;
+    public $userName = '';
 
+    public function render()
+    {
+        return view('livewire.users-crud', [
+            'users' => User::where('name', 'LIKE', "%{$this->search}%")->paginate(15),
+        ]);
+    }
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function render()
+    public function confirmDelete($id, $userName)
     {
-        return view('livewire.search-users', [
-            'users' => User::where('name', 'LIKE', "%{$this->search}%")->paginate(15),
-        ]);
-    }
-
-
-    public function deleteId($deleteId)
-    {
-        $this->deleteId = $deleteId;
+        $this->deleteId = $id;
+        $this->userName = $userName;
     }
 
     public function delete()
     {
-        User::findOrFail($this->deleteId)->delete();
+        User::destroy($this->deleteId);
     }
 }
