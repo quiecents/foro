@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -16,8 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users =  User::get();
-        return $users;
+        return view('admin.users.index');
     }
 
     /**
@@ -60,7 +60,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('admin.users.edit')->with(compact('user'));
     }
 
     /**
@@ -70,9 +70,13 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        dd($request->validated());
+        $user->update(
+            $request->validated()
+        );
+
     }
 
     /**
