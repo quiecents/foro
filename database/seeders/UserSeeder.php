@@ -2,11 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\User;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 class UserSeeder extends Seeder
 {
     /**
@@ -26,7 +29,19 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        User::factory(49)->create();
+        User::factory(29)->create();
+
+        User::factory()->count(20)
+        ->has(
+            Post::factory()
+                    ->count(3)
+                    ->state(function () {
+                        return ['category_id' => Category::inRandomOrder()->first()];
+                    })
+        )
+        ->create();
+
+        
 
     }
 }
